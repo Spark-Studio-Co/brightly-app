@@ -1,70 +1,46 @@
-import { View, Image, StyleSheet, Animated } from "react-native"
-import { useEffect } from "react"
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Image, Animated, Easing, View } from "react-native"
+import { useEffect, useRef } from "react"
 
-// Define the navigation type
-type RootStackParamList = {
-    Loader: undefined;
-    Main: undefined;
-};
 
-type LoaderScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Loader'>;
-
-export const LoaderScreen = () => {
-    const navigation = useNavigation<LoaderScreenNavigationProp>();
-    const fadeAnim = new Animated.Value(1);
-
-    useEffect(() => {
-        // Wait for 3 seconds before starting fade out
-        const timer = setTimeout(() => {
-            // Start fade out animation
-            Animated.timing(fadeAnim, {
-                toValue: 0,
-                duration: 800, // Duration of fade out in milliseconds
-                useNativeDriver: true,
-            }).start(() => {
-                // After animation completes, navigate to the main screen
-                navigation.navigate('Main');
-            });
-        }, 10000); // 3 seconds
-
-        // Clean up timer if component unmounts
-        return () => clearTimeout(timer);
-    }, []);
-
-    return (
-        <SafeAreaView style={styles.container}>
-            <Animated.View style={[styles.logoContainer, { opacity: fadeAnim }]}>
-                <Image
-                    source={require('../../assets/Group1000004764.png')}
-                    style={styles.logo}
-                    resizeMode="cover"
-                />
-            </Animated.View>
-        </SafeAreaView>
-    )
+interface ISplashScreenProps {
+    onAnimationEnd: () => void
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#ffffff',
-        width: '100%',
-        height: '100%',
-    },
-    logoContainer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    logo: {
-        width: '100%',
-        height: '100%',
-    }
-})
+export const LoaderScreen = ({ onAnimationEnd }: ISplashScreenProps) => {
+    const fadeAnim = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        Animated.sequence([
+            // First fade in quickly (appear smoothly)
+            Animated.timing(fadeAnim, {
+                toValue: 1,
+                duration: 1000, // Faster fade in (0.8 seconds)
+                useNativeDriver: true,
+                easing: Easing.ease
+            }),
+            Animated.delay(2500), // Shorter delay (1.5 seconds)
+            Animated.timing(fadeAnim, {
+                toValue: 0,
+                duration: 1000, // Faster fade out (1 second)
+                useNativeDriver: true,
+                easing: Easing.out(Easing.ease)
+            })
+        ]).start(() => {
+            onAnimationEnd();
+        });
+
+        return () => fadeAnim.stopAnimation();
+    }, [fadeAnim, onAnimationEnd]);
+
+    return (
+        <View className="flex-1 bg-white">
+            <Animated.View style={{ opacity: fadeAnim, flex: 1 }} className='mt-24'>
+                <Image
+                    source={require('../../../assets/images/splash-screen.png')}
+                    resizeMode="cover"
+                    className="w-[100%] h-full"
+                />
+            </Animated.View>
+        </View>
+    )
+}
