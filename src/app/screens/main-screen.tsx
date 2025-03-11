@@ -20,7 +20,7 @@ type RootStackParamList = {
 export const MainScreen = () => {
   const [galleryPermission, requestGalleryPermission] = ImagePicker.useMediaLibraryPermissions();
   const { navigate } = useNavigation<NavigationProp<RootStackParamList>>();
-  
+
   const pickImage = async () => {
     // Check if we have permission
     if (!galleryPermission?.granted) {
@@ -40,7 +40,6 @@ export const MainScreen = () => {
     });
 
     if (!result.canceled) {
-      // Navigate to a screen to process the selected image
       navigate('Camera', { imageUri: result.assets[0].uri });
       console.log('Selected image:', result.assets[0].uri);
     }
@@ -76,16 +75,16 @@ export const MainScreen = () => {
               <Text weight='regular' className='text-white text-[16px] mt-1'>Камера</Text>
             </View>
           } variant='main' />
-          <Button 
-            onPress={pickImage} 
-            className='bg-[#F5F5F5]' 
+          <Button
+            onPress={pickImage}
+            className='bg-[#F5F5F5]'
             children={
               <View className='flex flex-col items-center'>
                 <PhotoIcon />
                 <Text weight='regular' className='text-dark text-[16px] mt-3'>Галерея</Text>
               </View>
-            } 
-            variant='main' 
+            }
+            variant='main'
           />
         </View>
       </View>

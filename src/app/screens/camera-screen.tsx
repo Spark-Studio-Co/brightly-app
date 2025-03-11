@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Alert, Image, Animated } from 'react-native';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 
+import { useNavigation } from '@react-navigation/native';
+
 
 export const CameraScreen = () => {
     const [facing, setFacing] = useState<CameraType>('back');
@@ -11,10 +13,11 @@ export const CameraScreen = () => {
     const cameraRef = useRef<CameraView>(null);
     const scanLineAnim = useRef(new Animated.Value(0)).current;
 
+    const { navigate } = useNavigation()
+
     useEffect(() => {
         startScanAnimation();
         return () => {
-            // Clean up animation if component unmounts
             scanLineAnim.stopAnimation();
         };
     }, []);
@@ -58,6 +61,7 @@ export const CameraScreen = () => {
             try {
                 const photo = await cameraRef.current.takePictureAsync();
                 console.log('Photo taken:', photo);
+                navigate('Diagnosis' as never);
             } catch (error) {
                 console.error('Error taking photo:', error);
                 Alert.alert('Error', 'Failed to take photo');

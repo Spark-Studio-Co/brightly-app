@@ -1,7 +1,7 @@
 import { TouchableOpacity } from "react-native";
 import { TouchableOpacityProps } from "react-native";
 
-type Variants = "main";
+type Variants = "main" | "diagnosis";
 
 interface IButtonProps extends TouchableOpacityProps {
     children: React.ReactNode;
@@ -14,6 +14,8 @@ export const Button = ({ children, className = "", variant, ...props }: IButtonP
         switch (variant) {
             case "main":
                 return "w-[168px] h-[89px] rounded-[12px] flex items-center justify-center";
+            case "diagnosis":
+                return "w-[230px] h-[54px] flex items-center justify-center bg-brand rounded-[16px]"
             default:
                 return "";
         }
