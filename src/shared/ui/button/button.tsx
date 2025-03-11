@@ -6,7 +6,7 @@ type Variants = "main" | "diagnosis";
 interface IButtonProps extends TouchableOpacityProps {
     children: React.ReactNode;
     className?: string;
-    variant: Variants;
+    variant?: Variants;
 }
 
 export const Button = ({ children, className = "", variant, ...props }: IButtonProps) => {

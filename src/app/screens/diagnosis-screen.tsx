@@ -6,7 +6,12 @@ import { DiagnosisDescription } from "@/src/features/diagnosis/ui/diagnosis-desc
 import { Button } from "@/src/shared/ui/button/button"
 import { Avatar } from "@/src/features/avatar/ui/avatar"
 
+import { useNavigation } from "@react-navigation/native"
+
 export const DiagnosisScreen = () => {
+
+    const { navigate } = useNavigation()
+
     return (
         <SafeAreaView className="bg-white flex-1 justify-between h-[80%]">
             <View className="flex items-center w-[90%] mx-auto">
@@ -17,7 +22,7 @@ export const DiagnosisScreen = () => {
             </View>
             <View className="flex flex-row items-center justify-between w-[90%] mx-auto">
                 <Avatar />
-                <Button variant="diagnosis"><Text weight="bold" className="text-white text-[16px]">Записаться к врачу</Text></Button>
+                <Button onPress={() => navigate('CityChoice' as never)} variant="diagnosis"><Text weight="bold" className="text-white text-[16px]">Записаться к врачу</Text></Button>
             </View>
         </SafeAreaView>
     )

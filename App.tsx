@@ -12,6 +12,7 @@ import { CameraScreen } from './src/app/screens/camera-screen';
 
 import './global.css';
 import { DiagnosisScreen } from './src/app/screens/diagnosis-screen';
+import { CityChoiceScreen } from './src/app/screens/city-choice-screen';
 
 // Немедленно предотвращаем автоматическое скрытие сплеш-скрина
 SplashScreen.preventAutoHideAsync().catch(() => {
@@ -79,6 +80,7 @@ export default function App() {
                                 <Stack.Screen name="Main" component={MainScreen} />
                                 <Stack.Screen name="Camera" component={CameraScreen} />
                                 <Stack.Screen name="Diagnosis" component={DiagnosisScreen} />
+                                <Stack.Screen name="CityChoice" component={CityChoiceScreen} />
                             </Stack.Navigator>
                         </NavigationContainer>
                     )}
