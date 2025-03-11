@@ -8,12 +8,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { LoaderScreen } from './src/app/screens/loader-screen';
 import { MainScreen } from './src/app/screens/main-screen';
+import { CameraScreen } from './src/app/screens/camera-screen';
 
 import './global.css';
 
 // Немедленно предотвращаем автоматическое скрытие сплеш-скрина
 SplashScreen.preventAutoHideAsync().catch(() => {
-  /* если возникает ошибка, игнорируем */
+    /* если возникает ошибка, игнорируем */
 });
 
 const Stack = createNativeStackNavigator();
@@ -36,7 +37,7 @@ export default function App() {
             try {
                 // Здесь можно добавить любую дополнительную инициализацию
                 // Например, загрузку данных из AsyncStorage и т.д.
-                
+
                 // Ждем загрузки шрифтов
                 if (fontsLoaded) {
                     // Когда все готово, отмечаем приложение как готовое
@@ -75,6 +76,7 @@ export default function App() {
                         <NavigationContainer>
                             <Stack.Navigator screenOptions={{ headerShown: false }}>
                                 <Stack.Screen name="Main" component={MainScreen} />
+                                <Stack.Screen name="Camera" component={CameraScreen} />
                             </Stack.Navigator>
                         </NavigationContainer>
                     )}
