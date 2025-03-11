@@ -22,7 +22,6 @@ export const MainScreen = () => {
   const { navigate } = useNavigation<NavigationProp<RootStackParamList>>();
 
   const pickImage = async () => {
-    // Check if we have permission
     if (!galleryPermission?.granted) {
       const permissionResult = await requestGalleryPermission();
       if (!permissionResult.granted) {
@@ -31,7 +30,6 @@ export const MainScreen = () => {
       }
     }
 
-    // Launch image picker
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -40,10 +38,11 @@ export const MainScreen = () => {
     });
 
     if (!result.canceled) {
-      navigate('Camera', { imageUri: result.assets[0].uri });
-      console.log('Selected image:', result.assets[0].uri);
+      const imageUri = result.assets[0].uri;
+      console.log('Selected image:', imageUri);
+      navigate('Diagnosis' as never);
     }
-  }
+  };
 
   return (
     <View className='flex-1 relative'>
@@ -68,8 +67,8 @@ export const MainScreen = () => {
         <Text weight='regular' className='text-gray text-[16px] w-[90%] text-center mt-5'>
           Сканируйте кожу и получите персональные рекомендации
         </Text>
-        <View className='flex flex-row justify-between gap-x-2 max-w-[90%] mx-auto mt-20'>
-          <Button onPress={() => navigate('Camera')} className='bg-brand' children={
+        <View className='flex flex-row justify-between gap-x-4 max-w-[90%] mx-auto mt-20'>
+          <Button onPress={() => navigate('Camera' as never)} className='bg-brand' children={
             <View className='flex flex-col items-center'>
               <CameraIcon />
               <Text weight='regular' className='text-white text-[16px] mt-1'>Камера</Text>

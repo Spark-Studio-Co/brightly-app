@@ -13,7 +13,7 @@ export const DiagnosisScreen = () => {
     const { navigate } = useNavigation()
 
     return (
-        <SafeAreaView className="bg-white flex-1 justify-between h-[80%]">
+        <SafeAreaView className="bg-white flex-1 justify-between h-[70%]">
             <View className="flex items-center w-[90%] mx-auto">
                 <Text weight="bold" className="text-dark text-[38px] mt-16 -ml-8">✨ Готово!</Text>
                 <Text weight="regular" className="text-[#8B8B8B] text-[16px] mt-5">Ознакомьтесь с полным отчетом</Text>

@@ -7,10 +7,16 @@ import { CityChoiceTab } from "@/src/features/city-choice-tab/ui/city-choice-tab
 import BackArrowIcon from "@/src/shared/icons/back-arrow-icon"
 
 import { useNavigation } from "@react-navigation/native"
+import { useCitySwitch } from "@/src/features/city-switch/model/city-switch-store"
 
 export const CityChoiceScreen = () => {
-
+    const { setActive } = useCitySwitch()
     const navigation = useNavigation()
+
+    const handleOpenCity = (city: string) => {
+        setActive(city)
+        navigation.navigate('Doctors' as never)
+    }
 
     return (
         <SafeAreaView className="flex-1 bg-white">
@@ -24,8 +30,8 @@ export const CityChoiceScreen = () => {
                 <Text weight="bold" className="text-dark text-[32px]">
                     для записи к врачу
                 </Text>
-                <CityChoiceTab city="Домодедово" margin="mt-16" />
-                <CityChoiceTab city="Коммунарка" margin="mt-8" />
+                <CityChoiceTab onPress={() => handleOpenCity('Домодедово')} city="Домодедово" margin="mt-16" />
+                <CityChoiceTab onPress={() => handleOpenCity('Коммунарка')} city="Коммунарка" margin="mt-8" />
             </View>
         </SafeAreaView>
     )
