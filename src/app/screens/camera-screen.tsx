@@ -43,15 +43,6 @@ export const CameraScreen = () => {
         return <View />;
     }
 
-    if (!permission.granted) {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.message}>We need your permission to show the camera</Text>
-                <Button onPress={requestPermission} title="grant permission" />
-            </View>
-        );
-    }
-
     function toggleCameraFacing() {
         setFacing(current => (current === 'back' ? 'front' : 'back'));
     }
@@ -125,9 +116,10 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         flex: 1,
+        marginTop: 'auto',
         justifyContent: 'flex-end',
-        marginBottom: 48,
         backgroundColor: 'transparent',
+        marginBottom: 20
     },
     button: {
         flex: 0.3,

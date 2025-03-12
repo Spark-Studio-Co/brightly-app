@@ -11,17 +11,16 @@ export const LoaderScreen = ({ onAnimationEnd }: ISplashScreenProps) => {
 
     useEffect(() => {
         Animated.sequence([
-            // First fade in quickly (appear smoothly)
             Animated.timing(fadeAnim, {
                 toValue: 1,
-                duration: 1000, // Faster fade in (0.8 seconds)
+                duration: 1000,
                 useNativeDriver: true,
                 easing: Easing.ease
             }),
-            Animated.delay(2500), // Shorter delay (1.5 seconds)
+            Animated.delay(2500),
             Animated.timing(fadeAnim, {
                 toValue: 0,
-                duration: 1000, // Faster fade out (1 second)
+                duration: 1000,
                 useNativeDriver: true,
                 easing: Easing.out(Easing.ease)
             })
@@ -34,11 +33,11 @@ export const LoaderScreen = ({ onAnimationEnd }: ISplashScreenProps) => {
 
     return (
         <View className="flex-1 bg-white">
-            <Animated.View style={{ opacity: fadeAnim, flex: 1 }} className='mt-24'>
+            <Animated.View style={{ opacity: fadeAnim, flex: 1 }}>
                 <Image
                     source={require('../../../assets/images/splash-screen.png')}
-                    resizeMode="cover"
-                    className="w-[100%] h-full"
+                    resizeMode="contain"
+                    className="w-[100%] h-[90%] mt-auto"
                 />
             </Animated.View>
         </View>

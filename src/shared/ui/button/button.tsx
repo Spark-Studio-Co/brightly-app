@@ -13,9 +13,9 @@ export const Button = ({ children, className = "", variant, ...props }: IButtonP
     const getStyle = () => {
         switch (variant) {
             case "main":
-                return "w-[168px] h-[89px] rounded-[12px] flex items-center justify-center";
+                return "w-[48%] h-[89px] rounded-[12px] flex items-center justify-center";
             case "diagnosis":
-                return "w-[230px] h-[54px] flex items-center justify-center bg-brand rounded-[16px]"
+                return "w-56 h-[54px] flex items-center justify-center bg-brand rounded-[16px]"
             default:
                 return "";
         }

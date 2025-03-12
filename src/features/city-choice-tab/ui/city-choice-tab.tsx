@@ -12,10 +12,10 @@ interface IChoiceButtonProps {
 export const CityChoiceTab = ({ city, onPress, margin }: IChoiceButtonProps) => {
     return (
         <View className={`border-[#ECEDEF] border w-full rounded-[16px] px-8 pt-5 flex-col flex ${margin}`}>
-            <View className="flex flex-row justify-between items-center gap-x-10">
+            <View className="flex flex-row justify-between items-center">
                 <View className="flex flex-col">
                     <Text weight="bold" className="text-dark text-[24px]">{city}</Text>
-                    <Text weight="regular" className="text-[#8B8B8B] w-[80%] text-[16px] mt-3">Выбрать врача и записаться на прием</Text>
+                    <Text weight="regular" className="text-[#8B8B8B] w-[60%] text-[16px] mt-3">Выбрать врача и записаться на прием</Text>
                 </View>
                 <CalendarIcon />
             </View>

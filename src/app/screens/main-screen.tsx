@@ -67,7 +67,7 @@ export const MainScreen = () => {
         <Text weight='regular' className='text-gray text-[16px] w-[90%] text-center mt-5'>
           Сканируйте кожу и получите персональные рекомендации
         </Text>
-        <View className='flex flex-row justify-between gap-x-4 max-w-[90%] mx-auto mt-20'>
+        <View className='flex flex-row justify-between gap-x-4 mx-auto mt-20'>
           <Button onPress={() => navigate('Camera' as never)} className='bg-brand' children={
             <View className='flex flex-col items-center'>
               <CameraIcon />
