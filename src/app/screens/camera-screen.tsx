@@ -1,19 +1,32 @@
 import TakePhotoIcon from '@/src/shared/icons/take-photo-icon';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState, useRef, useEffect } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View, Alert, Image, Animated } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Alert, Image, Animated, SafeAreaView } from 'react-native';
 import { TapGestureHandler } from 'react-native-gesture-handler';
+import { Button } from '@/src/shared/ui/button/button';
+
+import Text from '@/src/shared/ui/text/text';
 
 import { useNavigation } from '@react-navigation/native';
+import { uploadPhoto } from '@/src/entities/upload-photo';
 
 
 export const CameraScreen = () => {
     const [facing, setFacing] = useState<CameraType>('back');
     const [permission, requestPermission] = useCameraPermissions();
+    const [isLoading, setIsLoading] = useState(false);
     const cameraRef = useRef<CameraView>(null);
     const scanLineAnim = useRef(new Animated.Value(0)).current;
 
     const { navigate } = useNavigation()
+
+    useEffect(() => {
+        (async () => {
+            if (!permission || permission.status === "undetermined") {
+                await requestPermission();
+            }
+        })()
+    }, [permission]);
 
     useEffect(() => {
         startScanAnimation();
@@ -43,21 +56,50 @@ export const CameraScreen = () => {
         return <View />;
     }
 
+    if (permission.status !== 'granted') {
+        return (
+            <View className='flex flex-col items-center justify-center top-1/2 gap-y-8'>
+                <Text className='text-xl text-black -mt-8'>Использование камеры - обязательно</Text>
+                <Button variant='diagnosis' onPress={requestPermission}>
+                    <Text className='text-white text-[18px]'>Разрешить</Text>
+                </Button>
+            </View>
+        );
+    }
+
     function toggleCameraFacing() {
         setFacing(current => (current === 'back' ? 'front' : 'back'));
     }
 
     async function takePhoto() {
-        if (cameraRef.current) {
+        if (cameraRef.current && !isLoading) {
             try {
+                setIsLoading(true);
                 const photo = await cameraRef.current.takePictureAsync();
-                console.log('Photo taken:', photo);
-                navigate('Diagnosis' as never);
-            } catch (error) {
-                console.error('Error taking photo:', error);
-                Alert.alert('Error', 'Failed to take photo');
+                console.log("📸 Photo taken:", photo);
+
+                const response = await uploadPhoto(photo);
+                console.log("📤 Upload response:", response);
+
+                navigate("Diagnosis", { photo, diagnosisData: response } as never);
+            } catch (error: any) {
+                console.error("❌ Error:", error);
+                Alert.alert(
+                    "Error",
+                    error.message || "An error occurred while processing your photo"
+                );
+            } finally {
+                setIsLoading(false);
             }
         }
+    }
+
+    if (isLoading) {
+        return (
+            <SafeAreaView className="bg-white flex-1 justify-center items-center">
+                <Text weight="regular" className="text-[#8B8B8B] text-[16px]">Анализируем фото...</Text>
+            </SafeAreaView>
+        )
     }
 
     return (
@@ -91,7 +133,11 @@ export const CameraScreen = () => {
                         </View>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.captureButton} onPress={takePhoto}>
+                        <TouchableOpacity
+                            style={[styles.captureButton, isLoading && styles.captureButtonDisabled]}
+                            onPress={takePhoto}
+                            disabled={isLoading}
+                        >
                             <TakePhotoIcon />
                         </TouchableOpacity>
                     </View>
@@ -102,6 +148,9 @@ export const CameraScreen = () => {
 }
 
 const styles = StyleSheet.create({
+    captureButtonDisabled: {
+        opacity: 0.5,
+    },
     container: {
         flex: 1,
         justifyContent: 'center',
@@ -159,3 +208,5 @@ const styles = StyleSheet.create({
         elevation: 10
     },
 });
+
+

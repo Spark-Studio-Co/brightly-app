@@ -1,14 +1,21 @@
 {
   "expo": {
-    "name": "brightly-app",
-    "slug": "brightly-app",
+    "name": "Brightly",
+    "slug": "Brightly",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "ios": {
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses camera."
+      },
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.brightlyapp"
     },
@@ -18,11 +25,6 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.anonymous.brightlyapp"
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
       "expo-router",

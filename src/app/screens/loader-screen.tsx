@@ -36,7 +36,7 @@ export const LoaderScreen = ({ onAnimationEnd }: ISplashScreenProps) => {
             <Animated.View style={{ opacity: fadeAnim, flex: 1 }}>
                 <Image
                     source={require('../../../assets/images/splash-screen.png')}
-                    resizeMode="contain"
+                    resizeMode="cover"
                     className="w-[100%] h-[90%] mt-auto"
                 />
             </Animated.View>
