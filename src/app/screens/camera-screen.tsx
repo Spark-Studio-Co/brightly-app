@@ -19,7 +19,6 @@ import { useNavigation } from "@react-navigation/native";
 import { uploadPhoto } from "@/src/entities/upload-photo";
 
 export const CameraScreen = () => {
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
   const [isLoading, setIsLoading] = useState(false);
