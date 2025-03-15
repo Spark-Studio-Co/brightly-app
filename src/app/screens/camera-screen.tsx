@@ -22,7 +22,8 @@ export const CameraScreen = () => {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
   const [isLoading, setIsLoading] = useState(false);
-  const cameraRef = useRef<CameraView>(null);
+  const [isCameraReady, setIsCameraReady] = useState(false);
+  const cameraRef = useRef<any>(null);
   const scanLineAnim = useRef(new Animated.Value(0)).current;
 
   const { navigate } = useNavigation();
@@ -80,8 +81,24 @@ export const CameraScreen = () => {
     setFacing((current) => (current === "back" ? "front" : "back"));
   }
 
+  const handleCameraReady = () => {
+    setIsCameraReady(true);
+    console.log("✅ Camera is ready");
+  };
+
   async function takePhoto() {
-    if (cameraRef.current && !isLoading) {
+    if (!isCameraReady) {
+      Alert.alert("Error", "Camera is still initializing. Please wait.");
+      return;
+    }
+
+    if (!cameraRef.current) {
+      console.error("🚨 Camera reference is null");
+      Alert.alert("Error", "Camera is not ready. Please try again.");
+      return;
+    }
+
+    if (!isLoading) {
       try {
         setIsLoading(true);
         const photo = await cameraRef.current.takePictureAsync();
@@ -89,12 +106,6 @@ export const CameraScreen = () => {
 
         const response = await uploadPhoto(photo);
         console.log("📤 Upload response:", response);
-
-        if (!cameraRef.current) {
-          console.error("🚨 Camera reference is null");
-          Alert.alert("Error", "Camera is not ready. Please try again.");
-          return;
-        }
 
         navigate("Diagnosis", { photo, diagnosisData: response } as never);
       } catch (error: any) {
@@ -122,7 +133,17 @@ export const CameraScreen = () => {
   return (
     <View style={styles.container}>
       <TapGestureHandler numberOfTaps={2} onActivated={toggleCameraFacing}>
-        <CameraView ref={cameraRef} style={styles.camera} facing={facing}>
+        <CameraView
+          ref={(ref) => {
+            if (ref) {
+              cameraRef.current = ref;
+              console.log("📷 Camera Ref Set");
+            }
+          }}
+          style={styles.camera}
+          facing={facing}
+          onCameraReady={handleCameraReady} // ✅ Ensures Camera is Ready
+        >
           <View className="absolute inset-0 flex items-center justify-center">
             <View className="mb-16 w-[100%] h-[75%] flex items-center justify-center relative">
               <Image
