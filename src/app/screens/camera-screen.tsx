@@ -9,6 +9,7 @@ import {
   Image,
   Animated,
   SafeAreaView,
+  ActivityIndicator,
 } from "react-native";
 import { TapGestureHandler } from "react-native-gesture-handler";
 import { Button } from "@/src/shared/ui/button/button";
@@ -159,6 +160,12 @@ export const CameraScreen = () => {
               />
             </View>
           </View>
+          {isLoading && (
+            <View style={styles.loadingOverlay}>
+              <ActivityIndicator size="large" color="#F24942" />
+              <Text className="text-white mt-4 text-lg">Обработка фото...</Text>
+            </View>
+          )}
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[
@@ -222,6 +229,17 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     elevation: 5,
     alignSelf: "center",
+  },
+  loadingOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 10,
   },
   captureButton: {
     alignSelf: "center",
