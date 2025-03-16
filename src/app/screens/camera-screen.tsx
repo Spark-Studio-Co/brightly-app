@@ -120,15 +120,6 @@ export const CameraScreen = () => {
     }
   }
 
-  if (isLoading) {
-    return (
-      <SafeAreaView className="bg-white flex-1 justify-center items-center">
-        <Text weight="regular" className="text-[#8B8B8B] text-[16px]">
-          Анализируем фото...
-        </Text>
-      </SafeAreaView>
-    );
-  }
 
   return (
     <View style={styles.container}>
@@ -142,7 +133,7 @@ export const CameraScreen = () => {
           }}
           style={styles.camera}
           facing={facing}
-          onCameraReady={handleCameraReady} // ✅ Ensures Camera is Ready
+          onCameraReady={handleCameraReady}
         >
           <View className="absolute inset-0 flex items-center justify-center">
             <View className="mb-16 w-[100%] h-[75%] flex items-center justify-center relative">
@@ -222,7 +213,7 @@ const styles = StyleSheet.create({
   scanLine: {
     position: "absolute",
     height: 4,
-    width: "82%",
+    width: "80%",
     backgroundColor: "rgba(255, 255, 255, 0.8)",
     boxShadow: "0px 2px 12px 0px #FFFFFF",
     shadowColor: "#FFFFFF",

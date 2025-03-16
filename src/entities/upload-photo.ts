@@ -1,5 +1,4 @@
-import * as FileSystem from "expo-file-system";
-import axios from 'axios'
+import axios from "axios";
 import { Alert } from "react-native";
 
 export interface DiagnosisResponse {
@@ -12,38 +11,38 @@ export interface DiagnosisResponse {
     short_recommendation?: string;
 }
 
-export const uploadPhoto = async (photo: any): Promise<DiagnosisResponse> => {
+export const uploadPhoto = async (photo: { uri: string }): Promise<DiagnosisResponse> => {
     try {
-        const base64 = await FileSystem.readAsStringAsync(photo.uri, {
-            encoding: FileSystem.EncodingType.Base64,
-        });
+        if (!photo?.uri) {
+            throw new Error("No photo URI provided");
+        }
 
-        const file: any = {
+        console.log("📤 Uploading photo from URI:", photo.uri);
+
+        const formData = new FormData();
+        formData.append("img", {
             uri: photo.uri,
             name: "photo.jpg",
             type: "image/jpeg",
-            base64: base64,
-        };
+        } as any); // Cast as 'any' to fix React Native's FormData type issue
 
-        const formData = new FormData();
-        formData.append("img", file);
+        const serverResponse = await axios.post(
+            "https://brightly-app-production.up.railway.app/api/skiniver/predict",
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
 
-        const serverResponse = await axios.post("https://brightly-app-production.up.railway.app/api/skiniver/predict", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
-
-        const response = serverResponse.data;
-        console.log("✅ Upload success. Full response:", JSON.stringify(response, null, 2));
-        
-        // Validate response has required fields
-        if (!response.desease || !response.description) {
-            console.error("❌ Invalid API response format:", response);
+        if (!serverResponse.data.desease || !serverResponse.data.description) {
+            console.error("❌ Invalid API response:", serverResponse.data);
             throw new Error("Invalid response from server");
         }
-        
-        return response;
+
+        console.log("✅ Upload success:", JSON.stringify(serverResponse.data, null, 2));
+        return serverResponse.data;
     } catch (error: any) {
         console.error("❌ Upload failed:", error.message);
         Alert.alert("Upload Error", "Failed to upload photo: " + error.message);

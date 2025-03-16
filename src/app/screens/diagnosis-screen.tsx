@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import Text from "@/src/shared/ui/text/text";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DiagnosisTab } from "@/src/features/diagnosis/ui/diagnosis-tab";
@@ -44,30 +44,34 @@ export const DiagnosisScreen = () => {
   }
 
   return (
-    <SafeAreaView className="bg-white flex-1 justify-between h-[70%]">
-      <View className="flex items-center w-[90%] mx-auto">
-        <Text weight="bold" className="text-dark text-[38px] mt-16 -ml-8">
-          ✨ Готово!
-        </Text>
-        <Text weight="regular" className="text-[#8B8B8B] text-[16px] mt-5">
-          Ознакомьтесь с полным отчетом
-        </Text>
-        <DiagnosisTab desease={diagnosisData.desease} />
-        <DiagnosisDescription
-          description={formatDiagnosisText(diagnosisData)}
-        />
-      </View>
-      <View className="flex flex-row items-center justify-between w-[90%] mx-auto">
-        <Avatar />
-        <Button
-          onPress={() => navigate("WebView" as never)}
-          variant="diagnosis"
-        >
-          <Text weight="bold" className="text-white text-[16px]">
-            Записаться к врачу
-          </Text>
-        </Button>
-      </View>
+    <SafeAreaView className="bg-white flex-1">
+      <ScrollView className="flex-1" contentContainerStyle={{ flexGrow: 1 }}>
+        <View className="flex-1 min-h-full flex-col justify-between">
+          <View className="flex items-center w-[90%] mx-auto mb-4">
+            <Text weight="bold" className="text-dark text-[38px] mt-16 -ml-8">
+              ✨ Готово!
+            </Text>
+            <Text weight="regular" className="text-[#8B8B8B] text-[16px] mt-5">
+              Ознакомьтесь с полным отчетом
+            </Text>
+            <DiagnosisTab desease={diagnosisData.desease} />
+            <DiagnosisDescription
+              description={formatDiagnosisText(diagnosisData)}
+            />
+          </View>
+          <View className="flex flex-row items-center justify-between w-[90%] mt-auto mx-auto">
+            <Avatar />
+            <Button
+              onPress={() => navigate("WebView" as never)}
+              variant="diagnosis"
+            >
+              <Text weight="bold" className="text-white text-[16px]">
+                Записаться к врачу
+              </Text>
+            </Button>
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
