@@ -31,6 +31,7 @@
         <data android:scheme="com.anonymous.brightlyapp"/>
         <data android:scheme="exp+brightly-app"/>
         <data android:scheme="exp+brightly"/>
+        <data android:scheme="exp+-"/>
       </intent-filter>
     </activity>
   </application>
