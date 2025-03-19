@@ -102,7 +102,13 @@ export const CameraScreen = () => {
     if (!isLoading) {
       try {
         setIsLoading(true);
-        const photo = await cameraRef.current.takePictureAsync();
+        // Take a lower resolution photo to avoid 413 Payload Too Large errors
+        const photo = await cameraRef.current.takePictureAsync({
+          quality: 0.5, // Lower quality (0.0 - 1.0)
+          skipProcessing: false,
+          base64: false,
+          exif: false,
+        });
         console.log("📸 Photo taken:", photo);
 
         const response = await uploadPhoto(photo);
@@ -135,6 +141,9 @@ export const CameraScreen = () => {
           style={styles.camera}
           facing={facing}
           onCameraReady={handleCameraReady}
+          // Set camera to use lower resolution
+          videoStabilizationMode="auto"
+          enableTorch={false}
         >
           <View className="absolute inset-0 flex items-center justify-center">
             <View className="mb-16 w-[100%] h-[75%] flex items-center justify-center relative">
