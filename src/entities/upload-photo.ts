@@ -24,10 +24,10 @@ export const uploadPhoto = async (photo: { uri: string }): Promise<DiagnosisResp
             uri: photo.uri,
             name: "photo.jpg",
             type: "image/jpeg",
-        } as any); // Cast as 'any' to fix React Native's FormData type issue
+        } as any);
 
         const serverResponse = await axios.post(
-            "https://brightly-app-production.up.railway.app/api/skiniver/predict",
+            "http://yarko.tw1.ru/api/skiniver/predict",
             formData,
             {
                 headers: {
