@@ -36,7 +36,7 @@ export const uploadPhoto = async (photo: { uri: string; width?: number; height?:
         } as any);
 
         const serverResponse = await axios.post(
-            "https://yarkoapp.ru/",
+            "https://yarkoapp.ru/api/",
             formData,
             {
                 headers: {
